@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// addr -- implements net.Addr
 type addr struct {
 	net  string
 	addr string
@@ -17,6 +18,7 @@ type addr struct {
 func (a *addr) Network() string { return a.net }
 func (a *addr) String() string  { return a.addr }
 
+// proxyConn -- implements net.Conn
 type proxyConn struct {
 	net.Conn
 
