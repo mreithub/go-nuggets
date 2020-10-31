@@ -59,3 +59,27 @@ func From(code int, err error) Error {
 		err:  err,
 	}
 }
+
+// GetCode -- returns the result of an error's Code() method (if present)
+//
+// if not found, http.StatusInternalServerError will be returned
+func GetCode(err error) int {
+	if codeErr, ok := err.(interface {
+		Code() int
+	}); ok {
+		return codeErr.Code()
+	}
+
+	return http.StatusInternalServerError
+}
+
+// GetData -- will call Data() if present on the given error value
+func GetData(err error) map[string]interface{} {
+	if dataErr, ok := err.(interface {
+		Data() map[string]interface{}
+	}); ok {
+		return dataErr.Data()
+	}
+
+	return nil
+}
