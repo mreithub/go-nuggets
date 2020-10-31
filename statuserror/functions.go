@@ -7,14 +7,14 @@ import (
 )
 
 // New -- creates a new error (wraps errors.New())
-func New(code int, text string) StatusError {
+func New(code int, text string) Error {
 	return statusError{
 		err:  errors.New(text),
 		code: code,
 	}
 }
 
-func Errorf(code int, format string, args ...interface{}) StatusError {
+func Errorf(code int, format string, args ...interface{}) Error {
 	return statusError{
 		err:  fmt.Errorf(format, args...),
 		code: code,
@@ -26,8 +26,8 @@ func Errorf(code int, format string, args ...interface{}) StatusError {
 // if err is a StatusError, it'll be returned as-is
 // Otherwise, we'll try to extract the error code (using the Code() method if available) or default to http.StatusInternalServerError
 // Then we'll call From() with the given status code
-func FromError(err error) StatusError {
-	if serr, ok := err.(StatusError); ok {
+func FromError(err error) Error {
+	if serr, ok := err.(Error); ok {
 		// already a StatusError -> simply return it
 		return serr
 	}
@@ -44,7 +44,7 @@ func FromError(err error) StatusError {
 }
 
 // From -- returns a StatusError for the given error (with Code() set to code)
-func From(code int, err error) StatusError {
+func From(code int, err error) Error {
 	// TODO if err is a StatusError, use its data
 	if serr, ok := err.(statusError); ok { // TODO make this work with the interface, not just the struct (right now we'll loose Unwrap() information)
 		return statusError{

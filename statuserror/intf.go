@@ -1,7 +1,7 @@
 package statuserror
 
-// StatusError - error implementation with a status code as well as optional data
-type StatusError interface {
+// Error - error implementation with a status code as well as optional data
+type Error interface {
 	error
 
 	// Code -- returns the HTTP status code for this error
@@ -12,6 +12,6 @@ type StatusError interface {
 	// Unwrap -- returns an underlying error if available
 	Unwrap() error
 
-	WithField(key string, value interface{}) StatusError
-	WithData(map[string]interface{}) StatusError
+	WithField(key string, value interface{}) Error
+	WithData(map[string]interface{}) Error
 }
