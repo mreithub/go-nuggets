@@ -14,6 +14,7 @@ func New(code int, text string) Error {
 	}
 }
 
+// Errorf -- creates and returns
 func Errorf(code int, format string, args ...interface{}) Error {
 	return statusError{
 		err:  fmt.Errorf(format, args...),

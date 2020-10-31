@@ -9,6 +9,10 @@ type Error interface {
 	// when calling FromError() which a
 	Code() int
 
+	// Data -- returns any extra data stored with this error (may be used for error template pages)
+	// may return nil
+	Data() map[string]interface{}
+
 	// Unwrap -- returns an underlying error if available
 	Unwrap() error
 
