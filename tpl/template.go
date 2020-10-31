@@ -14,6 +14,8 @@ type Params map[string]interface{}
 // Templates -- holds a map of compiled templates
 type Templates struct {
 	// Functions -- list of functions to make available in templates
+	//
+	// Note that you have to set this before you call Load()
 	Functions template.FuncMap
 
 	// if set, calls strings.HasSuffix() for each filename.
