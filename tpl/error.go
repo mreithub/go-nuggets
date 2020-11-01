@@ -21,6 +21,9 @@ type ErrorData struct {
 	// RedirectLocation -- if set, sets the 'Location' response header (use this in conjunction with 3xx codes)
 	RedirectLocation string
 
+	// Session -- information about the currently logged-in user (if applicable)
+	Session interface{}
+
 	// Data -- extra data
 	Data interface{}
 }
