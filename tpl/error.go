@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"html/template"
 	"io"
-	"log"
 	"net/http"
 )
 
@@ -66,7 +65,7 @@ func (d ErrorData) GetStatusText() string {
 // - error.html
 //
 // if none of these is found, we'll default to a really simple HTML
-func (t *Templates) SendError(w http.ResponseWriter, data ErrorData) {
+func (t *Templates) SendError(w http.ResponseWriter, data ErrorData) error {
 	var code = data.GetStatusCode()
 
 	// set Location header
@@ -88,13 +87,15 @@ func (t *Templates) SendError(w http.ResponseWriter, data ErrorData) {
 	if tpl == nil {
 		tpl, err = template.New("empty").Parse("{{define \"main\"}}<h1>{{.GetStatusCode}} {{.GetStatusText}}</h1><p>{{.Error}}</p>{{end}}")
 		if err != nil {
-			panic(err)
+			return fmt.Errorf("failed to parse default error template: %w", err)
 		}
 	}
 
 	w.WriteHeader(code)
 	if err = tpl.ExecuteTemplate(w, "main", data); err != nil {
-		log.Printf("error while rendering error page '%s': %v", tplPath, err)
 		io.WriteString(w, fmt.Sprintf("ERROR: failed to render %d error page", code))
+		return fmt.Errorf("failed to render error page '%s': %w", tplPath, err)
 	}
+
+	return nil
 }

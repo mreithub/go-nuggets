@@ -29,10 +29,12 @@ func TestSendErrorWithoutTEmplates(t *testing.T) {
 	var templates = Templates{}
 
 	var resp FakeResponse
-	templates.SendError(&resp, ErrorData{
+	var err = templates.SendError(&resp, ErrorData{
 		Code:  http.StatusAccepted,
 		Error: errors.New("hello"),
 	})
+
+	assert.NoError(t, err)
 
 	//
 	//assert.Equal(t, "<h1>...", string(resp.buff.Bytes()))
