@@ -46,12 +46,14 @@ func FromError(err error) Error {
 
 // From -- returns a StatusError for the given error (with Code() set to code)
 func From(code int, err error) Error {
-	// TODO if err is a StatusError, use its data
-	if serr, ok := err.(statusError); ok { // TODO make this work with the interface, not just the struct (right now we'll loose Unwrap() information)
-		return statusError{
-			code: code, err: serr.err,
-			data: serr.data,
-		}
+	// TODO make this work with the interface, not just the struct (right now we'll loose Unwrap() information)
+	if serr, ok := err.(statusErrorWithData); ok {
+		serr.code = code
+		return serr
+	}
+	if serr, ok := err.(statusError); ok {
+		serr.code = code
+		return serr
 	}
 
 	return statusError{
