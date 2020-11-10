@@ -69,7 +69,9 @@ func (t *Templates) loadRecursive(layout *template.Template, dir string, rootPat
 		}
 
 		if child.IsDir() {
-			t.loadRecursive(layout, childPath, rootPath)
+			if err = t.loadRecursive(layout, childPath, rootPath); err != nil {
+				return err
+			}
 		} else if t.filterFilename(relPath) {
 
 			var tpl *template.Template
